@@ -174,7 +174,7 @@ def minimax(board):
     if terminal(board):  # check if game over
         return None
     if board == initial_state():
-        return (1, 1)
+        return (1, 1)  # this is the optimal move so ion wanna let it think too much 
 
     turn = player(board)  # set whose turn it is
     optimalAction = None
