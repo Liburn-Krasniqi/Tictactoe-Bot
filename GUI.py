@@ -8,14 +8,14 @@ pygame.init()
 """
 display values
 """
-SCREEN_WIDTH=600
-SCREEN_HEIGHT=600
+size = 600
 
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+screen = pygame.display.set_mode((size, size))
 
 width = screen.get_width() 
 height = screen.get_height() 
 
+#  positions array for coords in the grid (to place Xs and Os)
 positionsX = [(width/5+20),(width/2),(width - (width/5+20))]
 positionsY = [(height/5+20),(height/2),(height - (height/5+20))]
 
@@ -45,11 +45,20 @@ playFont = pygame.font.SysFont('tahoma', 100, bold=False, italic=False)
 """
 Game text
 """
+playXButton = pygame.Rect(width/2+width/8, height/2+30, 140, 50)
 playasx = smallfont.render('Play as X', True, white)
+playXRect = playasx.get_rect()
+playXRect.center = playXButton.center
 
+playOButton = pygame.Rect(width/2-width/8-140, height/2+30, 140, 50)
 playaso = smallfont.render('Play as O', True, white)
+playORect = playaso.get_rect()
+playORect.center = playOButton.center
 
 gameName = bigfont.render('TICTACTOE', True, white)
+gameNameRect = gameName.get_rect()
+gameNameRect.center = (width/2, 200)
+
 
 X = playFont.render('X', True, white)
 O = playFont.render('O', True, white)
@@ -62,12 +71,12 @@ fontHeight = playFont.get_height()
 xWidth = playFont.size("X")[0]
 oWidth = playFont.size("O")[0]
 
-xPlayer = False
-oPlayer = False
+player = None
 
 smth = False
 
 run = True  
+
 while run:
 
     screen.fill((black))  # dark backdrop
@@ -79,37 +88,37 @@ while run:
             if width/3+20 <= mouse[0] <= (width-width/3-20) and height/3+20 <= mouse[1] <= (height-height/3-20):
                 # char width can be made variable in a function and passed as an arg
                 smth=True
-            if width/2+width/8 <= mouse[0] <= width/2+width/8+140 and height/2+30 <= mouse[1] <= height/2+30+50: 
-                xPlayer = True
+            if playXButton.collidepoint(mouse): 
+                player = X
 
 
         if event.type == pygame.QUIT:
             run = False
 
-    if xPlayer == False and oPlayer == False and width/2+width/8 <= mouse[0] <= width/2+width/8+140 and height/2+30 <= mouse[1] <= height/2+30+50:
-        pygame.draw.rect(screen, color_light, [width/2+width/8, height/2+30, 140, 50])
-        screen.blit(playasx, (width/2+width/8+10,height/2+40)) 
-    elif xPlayer == False and oPlayer == False:
-        pygame.draw.rect(screen, color_dark, [width/2+width/8, height/2+30, 140, 50])
-        screen.blit(playasx, (width/2+width/8+10,height/2+40)) 
+    if player == None and playXButton.collidepoint(mouse):
+        pygame.draw.rect(screen, color_light, playXButton)
+        screen.blit(playasx, playXRect) 
+    elif player == None:
+        pygame.draw.rect(screen, color_dark, playXButton)
+        screen.blit(playasx, playXRect)  
 
-    if xPlayer == False and oPlayer == False and width/2-width/8-140 <= mouse[0] <= width/2-width/8 and height/2+30 <= mouse[1] <= height/2+30+50:
-        pygame.draw.rect(screen, color_light, [width/2-width/8-140, height/2+30, 140, 50])
-        screen.blit(playaso, (width/2-width/8-132,height/2+40))
-    elif xPlayer == False and oPlayer == False:
-        pygame.draw.rect(screen, color_dark, [width/2-width/8-140, height/2+30, 140, 50])
-        screen.blit(playaso, (width/2-width/8-132,height/2+40))
+    if player == None and playOButton.collidepoint(mouse):
+        pygame.draw.rect(screen, color_light, playOButton)
+        screen.blit(playaso, playORect) 
+    elif player == None:
+        pygame.draw.rect(screen, color_dark, playOButton)
+        screen.blit(playaso, playORect) 
 
-    if xPlayer == False and oPlayer == False:
-        screen.blit(gameName, (width/2-width/8-50, height/2-100)) 
+    if player == None:
+        screen.blit(gameName, gameNameRect) 
     else:
         pygame.draw.line(screen, white, [width/8, height/3+20], [width-width/8, height/3+20], 1)  # H 1
         pygame.draw.line(screen, white, [width/3+20, height/8], [width/3+20, height-height/8], 1) # V 1
 
         pygame.draw.line(screen, white, [width/8, height-height/3-20], [width-width/8, height-height/3-20], 1)  # H 2
-        pygame.draw.line(screen, red, [width-width/3-20, height/8], [width-width/3-20, height-height/8], 1)  # V 2
-
-    if smth==False and xPlayer == True and width/3+20 <= mouse[0] <= (width-width/3-20) and height/3+20 <= mouse[1] <= (height-height/3-20):
+        pygame.draw.line(screen, white, [width-width/3-20, height/8], [width-width/3-20, height-height/8], 1)  # V 2
+# position x
+    if smth==False and player != None and width/3+20 <= mouse[0] <= (width-width/3-20) and height/3+20 <= mouse[1] <= (height-height/3-20):
         pygame.draw.rect(screen, color_dark, [width/3+20, height/3+20, 160, 160])
     if smth == True:   
         screen.blit(O, (positionsX[1]-oWidth/2, positionsY[1]-fontHeight/2)) 
