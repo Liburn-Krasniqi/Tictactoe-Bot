@@ -2,6 +2,7 @@
 pygame HAS to be imported and used in a virtual env 
 """
 import pygame
+import time
 
 pygame.init()
 
@@ -102,11 +103,13 @@ while run:
             pygame.draw.rect(screen, color_light, playXButton)
             screen.blit(playasx, playXRect)
             if event.type == pygame.MOUSEBUTTONDOWN:
+                time.sleep(0.2)  # so our event doesnt carry to the next step
                 player = X  
         elif playOButton.collidepoint(mouse):
             pygame.draw.rect(screen, color_light, playOButton)
             screen.blit(playaso, playORect)
             if event.type == pygame.MOUSEBUTTONDOWN:
+                time.sleep(0.2)
                 player = O  
     else:
         #  Draw the Grid H-horizontal line V-vertical line
@@ -114,12 +117,42 @@ while run:
         pygame.draw.line(screen, white, [width/3+20, height/8], [width/3+20, height-height/8], 1) # V 1
         pygame.draw.line(screen, white, [width/8, height-height/3-20], [width-width/8, height-height/3-20], 1)  # H 2
         pygame.draw.line(screen, white, [width-width/3-20, height/8], [width-width/3-20, height-height/8], 1)  # V 2
+
+        tile_size = 160
+        tile_origin = (width / 2 - (1.5 * tile_size),
+                       height / 2 - (1.5 * tile_size))
+        tiles = []  # this is to set the tile space (like for the mouse type shit ...god I dont know how to speak)
+
+        for i in range(3):
+            row = []
+            for j in range(3):
+                rect = pygame.Rect(
+                    tile_origin[0] + j * tile_size,
+                    tile_origin[1] + i * tile_size,
+                    tile_size, tile_size
+                )
+                # if board[i][j] != ttt.EMPTY:
+                #     move = moveFont.render(board[i][j], True, white)
+                #     moveRect = move.get_rect()
+                #     moveRect.center = rect.center
+                #     screen.blit(move, moveRect)
+                row.append(rect)
+            tiles.append(row)
+        for i in range(3): 
+            for j in range(3):
+                if smth==False and tiles[i][j].collidepoint(mouse):
+                    pygame.draw.rect(screen, color_dark, [(tiles[i][j])[0],(tiles[i][j])[1], 160, 160])
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        time.sleep(0.2)
+                        smth=True
+                if smth == True:   
+                    screen.blit(player, (positionsX[i]-oWidth/2, positionsY[j]-fontHeight/2)) 
+
+        # if width/3+20 <= mouse[0] <= (width-width/3-20) and height/3+20 <= mouse[1] <= (height-height/3-20):
+            
         
 # position x
-    # if smth==False and player != None and width/3+20 <= mouse[0] <= (width-width/3-20) and height/3+20 <= mouse[1] <= (height-height/3-20):
-    #     pygame.draw.rect(screen, color_dark, [width/3+20, height/3+20, 160, 160])
-    # if smth == True:   
-    #     screen.blit(O, (positionsX[1]-oWidth/2, positionsY[1]-fontHeight/2)) 
+    
 
     pygame.display.update()
 
