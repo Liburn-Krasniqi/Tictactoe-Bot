@@ -73,7 +73,7 @@ oWidth = playFont.size("O")[0]
 
 player = None
 
-smth = False
+smth = False  # temp value not used for anything specific other than a code tool
 
 run = True  
 
@@ -81,47 +81,45 @@ while run:
 
     screen.fill((black))  # dark backdrop
 
-    mouse = pygame.mouse.get_pos() 
-
     for event in pygame.event.get():
-        if event.type == pygame.MOUSEBUTTONDOWN: 
-            if width/3+20 <= mouse[0] <= (width-width/3-20) and height/3+20 <= mouse[1] <= (height-height/3-20):
-                # char width can be made variable in a function and passed as an arg
-                smth=True
-            if playXButton.collidepoint(mouse): 
-                player = X
-
-
         if event.type == pygame.QUIT:
             run = False
 
-    if player == None and playXButton.collidepoint(mouse):
-        pygame.draw.rect(screen, color_light, playXButton)
-        screen.blit(playasx, playXRect) 
-    elif player == None:
-        pygame.draw.rect(screen, color_dark, playXButton)
-        screen.blit(playasx, playXRect)  
+    mouse = pygame.mouse.get_pos() 
 
-    if player == None and playOButton.collidepoint(mouse):
-        pygame.draw.rect(screen, color_light, playOButton)
-        screen.blit(playaso, playORect) 
-    elif player == None:
-        pygame.draw.rect(screen, color_dark, playOButton)
-        screen.blit(playaso, playORect) 
+    #  draw Start(?) Screen
 
     if player == None:
         screen.blit(gameName, gameNameRect) 
+
+        pygame.draw.rect(screen, color_dark, playXButton)
+        screen.blit(playasx, playXRect) 
+
+        pygame.draw.rect(screen, color_dark, playOButton)
+        screen.blit(playaso, playORect) 
+
+        if playXButton.collidepoint(mouse):
+            pygame.draw.rect(screen, color_light, playXButton)
+            screen.blit(playasx, playXRect)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                player = X  
+        elif playOButton.collidepoint(mouse):
+            pygame.draw.rect(screen, color_light, playOButton)
+            screen.blit(playaso, playORect)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                player = O  
     else:
+        #  Draw the Grid H-horizontal line V-vertical line
         pygame.draw.line(screen, white, [width/8, height/3+20], [width-width/8, height/3+20], 1)  # H 1
         pygame.draw.line(screen, white, [width/3+20, height/8], [width/3+20, height-height/8], 1) # V 1
-
         pygame.draw.line(screen, white, [width/8, height-height/3-20], [width-width/8, height-height/3-20], 1)  # H 2
         pygame.draw.line(screen, white, [width-width/3-20, height/8], [width-width/3-20, height-height/8], 1)  # V 2
+        
 # position x
-    if smth==False and player != None and width/3+20 <= mouse[0] <= (width-width/3-20) and height/3+20 <= mouse[1] <= (height-height/3-20):
-        pygame.draw.rect(screen, color_dark, [width/3+20, height/3+20, 160, 160])
-    if smth == True:   
-        screen.blit(O, (positionsX[1]-oWidth/2, positionsY[1]-fontHeight/2)) 
+    # if smth==False and player != None and width/3+20 <= mouse[0] <= (width-width/3-20) and height/3+20 <= mouse[1] <= (height-height/3-20):
+    #     pygame.draw.rect(screen, color_dark, [width/3+20, height/3+20, 160, 160])
+    # if smth == True:   
+    #     screen.blit(O, (positionsX[1]-oWidth/2, positionsY[1]-fontHeight/2)) 
 
     pygame.display.update()
 
