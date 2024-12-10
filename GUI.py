@@ -5,7 +5,7 @@ import pygame
 import time
 import ai as game
 pygame.init()
-
+pygame.display.set_caption("Tic-tac-toe")
 """
 display values
 """
@@ -24,20 +24,20 @@ height = screen.get_height()
 """
 color presets
 """
-white = (255,255,255)
+white = (255, 255, 255)
 
 black = (0, 0, 0)
 
-color_light = (170,170,170) 
+color_light = (170, 170, 170) 
 
-color_dark = (100,100,100) 
+color_dark = (100, 100, 100) 
 
 """
 Font style presets
 """
-smallfont = pygame.font.SysFont('Corbel',35) 
+smallfont = pygame.font.SysFont('Corbel', 35) 
 
-bigfont = pygame.font.SysFont('Corbel',55) 
+bigfont = pygame.font.SysFont('Corbel', 55) 
 
 playFont = pygame.font.SysFont('tahoma', 100, bold=False, italic=False)
 
@@ -107,10 +107,17 @@ while run:
                 ai_turn = True
     else:
         #  Draw the Grid; H-horizontal line V-vertical line
-        pygame.draw.line(screen, white, [width/8, height/3+20], [width-width/8, height/3+20], 1)  # H 1
-        pygame.draw.line(screen, white, [width/3+20, height/8], [width/3+20, height-height/8], 1) # V 1
-        pygame.draw.line(screen, white, [width/8, height-height/3-20], [width-width/8, height-height/3-20], 1)  # H 2
-        pygame.draw.line(screen, white, [width-width/3-20, height/8], [width-width/3-20, height-height/8], 1)  # V 2
+        pygame.draw.line(screen, white, [width/8, height/3+20],
+                         [width-width/8, height/3+20], 1)  # H 1
+
+        pygame.draw.line(screen, white, [width/3+20, height/8],
+                         [width/3+20, height-height/8], 1)  # V 1
+        
+        pygame.draw.line(screen, white,
+                         [width/8, height-height/3-20], [width-width/8, height-height/3-20], 1)  # H 2
+        
+        pygame.draw.line(screen, white,
+                         [width-width/3-20, height/8], [width-width/3-20, height-height/8], 1)  # V 2
 
         # this is to set the tile space (like for the mouse type shit ...god I dont know how to speak)
         tile_size = 160
@@ -134,7 +141,6 @@ while run:
                 row.append(rect)
             tiles.append(row)
 
-
         # Show title
         if game_over:
             winner = game.winner(board)
@@ -154,7 +160,7 @@ while run:
         # ai turn 
         if user != player and not game_over:
             if ai_turn:
-                pygame.display.update()
+                pygame.display.update()  # i did not know how else to fix this (will look into it l8r)
                 move = game.minimax(board)
                 board = game.result(board, move)
                 time.sleep(1)
@@ -164,10 +170,11 @@ while run:
         for i in range(3): 
             for j in range(3):
                 if tiles[i][j].collidepoint(mouse) and board[i][j] == game.EMPTY and game.terminal(board) != True:
-                    pygame.draw.rect(screen, color_dark, [(tiles[i][j])[0],(tiles[i][j])[1], 160, 160])
+                    pygame.draw.rect(screen, color_dark, [(tiles[i][j])[0],
+                                                          (tiles[i][j])[1], 160, 160])
                     if event.type == pygame.MOUSEBUTTONDOWN and game.terminal(board) != True:
                         time.sleep(0.2)
-                        board = game.result(board, (i,j))
+                        board = game.result(board, (i, j))
                         ai_turn = True
            
     pygame.display.update()
