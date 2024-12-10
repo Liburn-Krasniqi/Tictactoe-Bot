@@ -68,7 +68,11 @@ ai_turn = False
 
 run = True  
 
+    
 while run:
+
+    game_over = game.terminal(board)
+    player = game.player(board)
 
     screen.fill((black))  # dark backdrop
 
@@ -113,7 +117,7 @@ while run:
         tile_origin = (width / 2 - (1.5 * tile_size),
                        height / 2 - (1.5 * tile_size))
         tiles = []  
-
+        
         for i in range(3):
             row = []
             for j in range(3):
@@ -129,21 +133,33 @@ while run:
                     screen.blit(move, moveRect)
                 row.append(rect)
             tiles.append(row)
+
+
         # Show title
         if game_over:
             winner = game.winner(board)
             if winner is None:
-                title = f"Game Over: Tie."
+                title = "Game Over: Tie."
             else:
                 title = f"Game Over: {winner} wins."       
         elif user == player:
             title = f"Play as {user}"
         else:
-            title = f"Computer thinking..."
+            title = "Computer thinking..."
         title = bigfont.render(title, True, white)
         titleRect = title.get_rect()
         titleRect.center = ((width / 2), 30)
-        screen.blit(title, titleRect)   
+        screen.blit(title, titleRect) 
+
+        # ai turn 
+        if user != player and not game_over:
+            if ai_turn:
+                pygame.display.update()
+                move = game.minimax(board)
+                board = game.result(board, move)
+                time.sleep(1)
+                ai_turn = False
+    
         # user turn
         for i in range(3): 
             for j in range(3):
@@ -153,18 +169,7 @@ while run:
                         time.sleep(0.2)
                         board = game.result(board, (i,j))
                         ai_turn = True
-                    
-    game_over = game.terminal(board)
-    player = game.player(board)
-    
-    # ai turn 
-    if user != player and not game_over:
-        if ai_turn:
-            time.sleep(0.5)
-            move = game.minimax(board)
-            board = game.result(board, move)
-            ai_turn = False
-    
+           
     pygame.display.update()
 
 
