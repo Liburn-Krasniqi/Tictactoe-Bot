@@ -49,7 +49,7 @@ The AI bot uses the **Minimax algorithm**, which evaluates all possible moves to
 ---
 
 ## 💡 Contribution
-Feel free to fork this repository and submit pull requests for any improvements or new features! Bug reports and feedback are always welcome in the [Issues](https://github.com/Liburn-Krasniqi/tic-tac-toe-ai/issues) section.
+Feel free to fork this repository and submit pull requests for any improvements or new features! Bug reports and feedback are always welcome in the [Issues](https://github.com/Liburn-Krasniqi/Tic-tac-toe/issues) section.
 
 ---
 
