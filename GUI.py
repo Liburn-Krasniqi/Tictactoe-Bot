@@ -58,6 +58,11 @@ gameName = bigfont.render('TICTACTOE', True, white)
 gameNameRect = gameName.get_rect()
 gameNameRect.center = (width/2, 200)
 
+playAgainButton = pygame.Rect(width/2-70, 9*(height/10), 140, 50)
+playAgain = smallfont.render('Play again', True, white)
+playAgainRect = playAgain.get_rect()
+playAgainRect.center = playAgainButton.center
+
 """
 whatever 
 """
@@ -144,10 +149,21 @@ while run:
         # Show title
         if game_over:
             winner = game.winner(board)
+            pygame.draw.rect(screen, color_dark, playAgainButton)
+            screen.blit(playAgain, playAgainRect)
+            if playAgainButton.collidepoint(mouse):
+                pygame.draw.rect(screen, color_light, playAgainButton)
+                screen.blit(playAgain, playAgainRect)
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    time.sleep(0.2)  
+                    user = None
+                    board = game.initial_state()
+                    ai_turn = False  
             if winner is None:
                 title = "Game Over: Tie."
             else:
-                title = f"Game Over: {winner} wins."       
+                title = f"Game Over: {winner} wins." 
+
         elif user == player:
             title = f"Play as {user}"
         else:
