@@ -2,7 +2,10 @@
 
 **Tic-Tac-Toe** is a classic two-player game where you can now challenge an **impossible-to-beat AI**. This project implements the **Minimax algorithm** to ensure the AI plays optimally, making it an excellent test of your strategic thinking.
 
----
+### Demo:
+
+![Untitled-ezgif com-optimize](https://github.com/user-attachments/assets/08b1bfb5-e256-430b-ac8c-d9975b902b7e)
+
 
 ## 🎮 Features
 - **Unbeatable AI**: The Minimax algorithm guarantees perfect play.
